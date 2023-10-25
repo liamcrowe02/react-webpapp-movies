@@ -8,6 +8,8 @@ import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
 import FormControl from "@mui/material/FormControl";
+import { useQuery } from "react-query";
+import Spinner from '../spinner'
 import Select from "@mui/material/Select";
 import img from '../../images/pexels-dziana-hasanbekava-5480827.jpg'
 
@@ -38,6 +40,15 @@ export default function FilterMoviesCard(props) {
       // eslint-disable-next-line
   }, []);
 
+  const [genres, setGenres] = useState([{ id: '0', name: "All" }])
+
+  useEffect(() => {
+    getGenres().then((allGenres) => {
+      setGenres([genres[0], ...allGenres]);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   const handleChange = (e, type, value) => {
     e.preventDefault()
     props.onUserInput(type, value)   // NEW
@@ -48,7 +59,7 @@ export default function FilterMoviesCard(props) {
   const handleGenreChange = e => {
     handleChange(e, "genre", e.target.value)
   };
-
+  
   return (
     <Card 
       sx={{
