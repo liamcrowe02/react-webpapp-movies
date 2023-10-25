@@ -49,17 +49,33 @@ export default function FilterMoviesCard(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const handleChange = (e, type, value) => {
-    e.preventDefault()
-    props.onUserInput(type, value)   // NEW
+  const { data, error, isLoading, isError } = useQuery("genres", getGenres);
+
+  if (isLoading) {
+    return <Spinner />;
   }
-  const handleTextChange = e => {
-    handleChange(e, "name", e.target.value)
+
+  if (isError) {
+    return <h1>{error.message}</h1>;
   }
-  const handleGenreChange = e => {
-    handleChange(e, "genre", e.target.value)
-  };
   
+  const genres = data.genres;
+  if (genres[0].name !== "All"){
+    genres.unshift({ id: "0", name: "All" });
+  }
+
+  const handleChange = (e, type, value) => {
+    e.preventDefault();
+    props.onUserInput(type, value); // NEW
+  };
+
+  const handleTextChange = (e, props) => {
+    handleChange(e, "name", e.target.value);
+  };
+
+  const handleGenreChange = (e) => {
+    handleChange(e, "genre", e.target.value);
+  };
   return (
     <Card 
       sx={{
