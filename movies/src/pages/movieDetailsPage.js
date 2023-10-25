@@ -5,6 +5,8 @@ import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import React, {useState, useEffect}  from "react";
 import { useParams } from 'react-router-dom';
+import { getMovie, getMovieImages } from "../api/tmdb-api";
+import { getGenres } from "../../api/tmdb-api";
 
 const MoviePage = (props) => {
   const { id } = useParams();
@@ -12,17 +14,17 @@ const MoviePage = (props) => {
   const [images, setImages] = useState([]);
 
   useEffect(() => {
-    fetch(
-      `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.REACT_APP_TMDB_KEY}`
-    )
-      .then((res) => {
-        return res.json();
-      })
-      .then((movie) => {
-        // console.log(movie)
-        setMovie(movie);
-      });
+    getMovie(id).then((movie) => {
+      setMovie(movie);
+    });
   }, [id]);
+
+  useEffect(() => {
+    getMovieImages(id).then((images) => {
+      setImages(images);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     fetch(
@@ -36,6 +38,14 @@ const MoviePage = (props) => {
       });
       // eslint-disable-next-line
   }, []);
+
+  /*Replace what with the below */
+  useEffect(() => {
+    getGenres().then((allGenres) => {
+      setGenres([genres[0], ...allGenres]);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <>
