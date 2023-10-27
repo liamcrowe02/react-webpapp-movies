@@ -23,31 +23,6 @@ const formControl =
 
 export default function FilterMoviesCard(props) {
 
-  const [genres, setGenres] = useState([{ id: '0', name: "All" }])
-  
-  useEffect(() => {
-    fetch(
-      "https://api.themoviedb.org/3/genre/movie/list?api_key=" +
-        process.env.REACT_APP_TMDB_KEY
-    )
-      .then(res => res.json())
-      .then(json => {
-        // console.log(json.genres) 
-        return json.genres
-      })
-      .then(apiGenres => {
-        setGenres([genres[0], ...apiGenres]);
-      });
-      // eslint-disable-next-line
-  }, []);
-
-
-  useEffect(() => {
-    getGenres().then((allGenres) => {
-      setGenres([genres[0], ...allGenres]);
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   const { data, error, isLoading, isError } = useQuery("genres", getGenres);
 
@@ -59,7 +34,7 @@ export default function FilterMoviesCard(props) {
     return <h1>{error.message}</h1>;
   }
   
-  genres = data.genres;
+  const genres = data.genres;
   if (genres[0].name !== "All"){
     genres.unshift({ id: "0", name: "All" });
   }
