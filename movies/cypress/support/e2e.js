@@ -7,14 +7,8 @@
 //
 // You can change the location of this file or turn off
 // automatically serving support files with the
-// 'supportFile' configuration option.
-//
-// You can read more here:
-// https://on.cypress.io/configuration
-// ***********************************************************
+export const filterByTitle = (movieList, string) =>
+  movieList.filter((m) => m.title.toLowerCase().search(string) !== -1);
 
-// Import commands.js using ES2015 syntax:
-import './commands'
-
-// Alternatively you can use CommonJS syntax:
-// require('./commands')
+export const filterByGenre = (movieList, genreId) =>
+  movieList.filter((m) => m.genre_ids.includes(genreId));
