@@ -26,7 +26,7 @@ const App = () => {
         <SiteHeader />
         <MoviesContextProvider>
         <Routes>
-          ... routes here
+            <Route path="/reviews/form" element={ <AddMovieReviewPage /> } />
         </Routes>
         </MoviesContextProvider>
       </BrowserRouter>

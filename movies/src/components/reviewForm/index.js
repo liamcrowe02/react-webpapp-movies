@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
@@ -11,15 +10,6 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import { useNavigate } from "react-router-dom";
 
-const context = useContext(MoviesContext);
-
-const [open, setOpen] = useState(false); 
-const navigate = useNavigate();
-
-const handleSnackClose = (event) => {
-    setOpen(false);
-    navigate("/movies/favorites");
-  };
 
 const ratings = [
   {
@@ -73,6 +63,15 @@ const styles = {
 
 const ReviewForm = ({ movie }) => {
   const [rating, setRating] = useState(3);
+  const context = useContext(MoviesContext);
+
+const [open, setOpen] = useState(false); 
+const navigate = useNavigate();
+
+const handleSnackClose = (event) => {
+    setOpen(false);
+    navigate("/movies/favorites");
+  };
   
   const defaultValues = {
     author: "",

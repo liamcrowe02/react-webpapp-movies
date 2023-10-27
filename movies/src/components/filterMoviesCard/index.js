@@ -12,6 +12,7 @@ import { useQuery } from "react-query";
 import Spinner from '../spinner'
 import Select from "@mui/material/Select";
 import img from '../../images/pexels-dziana-hasanbekava-5480827.jpg'
+import { getGenres } from "../../api/tmdb-api";
 
 const formControl = 
   {
@@ -40,7 +41,6 @@ export default function FilterMoviesCard(props) {
       // eslint-disable-next-line
   }, []);
 
-  const [genres, setGenres] = useState([{ id: '0', name: "All" }])
 
   useEffect(() => {
     getGenres().then((allGenres) => {
@@ -59,7 +59,7 @@ export default function FilterMoviesCard(props) {
     return <h1>{error.message}</h1>;
   }
   
-  const genres = data.genres;
+  genres = data.genres;
   if (genres[0].name !== "All"){
     genres.unshift({ id: "0", name: "All" });
   }

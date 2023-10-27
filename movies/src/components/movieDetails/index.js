@@ -1,4 +1,3 @@
-import React from "react";
 import Chip from "@mui/material/Chip";
 import React, { useState } from "react";
 import Paper from "@mui/material/Paper";
