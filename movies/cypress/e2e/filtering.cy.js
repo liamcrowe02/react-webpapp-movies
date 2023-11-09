@@ -1,53 +1,6 @@
 import { filterByGenre, filterByTitle } from "../support/e2e";
 
-let movies;
-const movieId = 497582; // Enola Holmes movie id
-
-describe("The favourites feature", () => {
-  before(() => {
-    cy.request(
-      `https://api.themoviedb.org/3/discover/movie?api_key=${Cypress.env(
-        "TMDB_KEY"
-      )}&language=en-US&include_adult=false&include_video=false&page=1`
-    )
-      .its("body")
-      .then((response) => {
-        movies = response.results;
-      });
-  });
-  beforeEach(() => {
-    cy.visit("/");
-  });
-
-  describe("Selecting favourites", () => {
-    it("selected movie card shows the red heart", () => {
-      cy.get(".MuiCardHeader-root").eq(1).find("svg").should("not.exist");
-      cy.get("button[aria-label='add to favorites']").eq(1).click();
-      cy.get(".MuiCardHeader-root").eq(1).find("svg");
-    });
-  });
-
-  describe("The favourites page", () => {
-    beforeEach(() => {
-      // Select two favourites and navigate to Favourites page
-      cy.get("button[aria-label='add to favorites']").eq(1).click();
-      cy.get("button[aria-label='add to favorites']").eq(3).click();
-      cy.get("a").contains("Favorites").click();
-    });
-    it("only the tagged movies are listed", () => {
-      cy.get(".MuiCardHeader-content").should("have.length", 2);
-      cy.get(".MuiCardHeader-content")
-        .eq(0)
-        .find("p")
-        .contains(movies[1].title);
-      cy.get(".MuiCardHeader-content")
-        .eq(1)
-        .find("p")
-        .contains(movies[3].title);
-    });
-    it("removes deleted movies", () => {});
-  });
-});
+let movies; // List of Discover movies from TMDB
 
 describe("Filtering", () => {
   before(() => {
@@ -87,8 +40,8 @@ describe("Filtering", () => {
   });
   describe("By movie genre", () => {
     it("show movies with the selected genre", () => {
-      const selectedGenreId = 35;
-      const selectedGenreText = "Comedy";
+      const selectedGenreId = 18;
+      const selectedGenreText = "Drama";
       const matchingMovies = filterByGenre(movies, selectedGenreId);
       cy.get("#genre-select").click();
       cy.get("li").contains(selectedGenreText).click();
@@ -102,6 +55,37 @@ describe("Filtering", () => {
     });
   });
   describe("Combined genre and title", () => {
-    // TODO
+    it("should display movies that match both genre and title filters", () => {
+      const selectedGenreId = 18; 
+      const selectedGenreText = "Drama"; 
+      const genreMatchingMovies = filterByGenre(movies, selectedGenreId);
+  
+      const searchString = "m"; 
+      const titleMatchingMovies = filterByTitle(movies, searchString);
+  
+      // Filter movies by both genre and title
+      const combinedMatchingMovies = movies.filter((movie) =>
+        genreMatchingMovies.includes(movie) && titleMatchingMovies.includes(movie)
+      );
+  
+      // Set the genre filter
+      cy.get("#genre-select").click();
+      cy.get("li").contains(selectedGenreText).click();
+  
+      // Set the title filter
+      cy.get("#filled-search").clear().type(searchString);
+  
+      // Verify that the displayed movies match both genre and title filters
+      cy.get(".MuiCardHeader-content").should(
+        "have.length",
+        combinedMatchingMovies.length
+      );
+  
+      // Verify the title of each displayed movie
+      cy.get(".MuiCardHeader-content").each(($card, index) => {
+        cy.wrap($card).find("p").contains(combinedMatchingMovies[index].title);
+      });
+    });
   });
+  
 });

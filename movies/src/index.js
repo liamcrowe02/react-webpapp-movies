@@ -2,6 +2,8 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import HomePage from "./pages/homePage";
 import MoviePage from "./pages/movieDetailsPage";
+import LatestMoviesPage from "./pages/latestMoviesPage";
+import TrendingMoviesPage from "./pages/trendingMoviesPage";
 import FavoriteMoviesPage from "./pages/favoriteMoviesPage";
 import MovieReviewPage from "./pages/movieReviewPage";
 import { QueryClientProvider, QueryClient } from "react-query";
@@ -28,6 +30,8 @@ const App = () => {
         <MoviesContextProvider>
         <Routes>
           <Route path="/movies/favorites" element={<FavoriteMoviesPage />} />
+          <Route path="/movies/latest" element={<LatestMoviesPage />} />
+          <Route path="/movies/trending" element={<TrendingMoviesPage />} />
           {/* <Route path="/movies/upcoming" element={<UpcomingMoviesPage />} /> */}
           <Route path="/reviews/form" element={ <AddMovieReviewPage /> } />
           <Route path="/reviews/:id" element={ <MovieReviewPage /> } />

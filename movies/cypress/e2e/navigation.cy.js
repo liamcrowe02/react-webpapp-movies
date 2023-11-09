@@ -1,3 +1,4 @@
+let movies;
 let movieId; // Enola Holmes movie id
 
 describe("Navigation", () => {
@@ -47,8 +48,20 @@ describe("Navigation", () => {
       }
     );
   });
-  describe("From the favourites page to a movie's details", () => {
-    // TODO
+  describe("From the favorites page to a movie's details", () => {
+    beforeEach(() => {
+      // Navigate to the Favorites page (replace with the actual navigation steps)
+      cy.get("button").contains("Favorites").click();
+      cy.url().should("include", `/favorites`);
+    });
+  
+    it("navigates to a movie's details page from the favorites list", () => {
+      // Click on a movie in the favorites list (replace with your actual selector)
+      cy.get(".favorite-movie").eq(0).click();
+  
+      // Verify that the URL changes to the movie's details page
+      cy.url().should("include", `/movies/${movieId}`); // Replace 'movieId' with the actual movie ID
+    });
   });
   describe("The forward/backward links", () => {
     beforeEach(() => {
